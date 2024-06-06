@@ -1,21 +1,37 @@
-.grid-container {
-  margin: 20px;
+.dashboard-container {
+  background-color: #8BC24B;
+  padding: 20px;
+  border-radius: 8px;
 }
 
-.dashboard-card {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
+.date-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-.more-button {
-  position: absolute;
-  top: 5px;
-  right: 10px;
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.dashboard-card-content {
+.section h2 {
+  color: #757575;
+  margin-bottom: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+h1, p {
   text-align: center;
+  color: #757575;
 }

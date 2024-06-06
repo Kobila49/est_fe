@@ -40,43 +40,13 @@ export const appRoutes: Routes = [
     canActivateChild: [authChildGuard]
   },
   {
-    path: 'address',
-    loadComponent: () =>
-      import('./address-form/address-form.component').then(
-        (c) => c.AddressFormComponent
-      ),
-    title: 'Address',
-    canActivate: [authGuard],
-    canActivateChild: [authChildGuard]
-  },
-  {
-    path: 'table',
+    path: 'history',
     loadComponent: () =>
       import('./table/table.component').then(
         (c) => c.TableComponent
       ),
-    title: 'Table',
+    title: 'History',
     canActivate: [authGuard],
     canActivateChild: [authChildGuard]
-  },
-  {
-    path: 'tree',
-    loadComponent: () =>
-      import('./tree/tree.component').then(
-        (c) => c.TreeComponent
-      ),
-    title: 'Tree',
-    canActivate: [authGuard],
-    canActivateChild: [authChildGuard]
-  },
-  {
-    path: 'drag-drop',
-    loadComponent: () =>
-      import('./drag-drop/drag-drop.component').then(
-        (c) => c.DragDropComponent
-      ),
-    title: 'Drag-Drop',
-    canActivate: [authGuard],
-    canActivateChild: [authChildGuard]
-  },
+  }
 ];

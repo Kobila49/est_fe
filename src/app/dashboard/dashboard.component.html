@@ -1,26 +1,115 @@
-<div class="grid-container">
-  <h1 class="mat-h1">Dashboard</h1>
-  <mat-grid-list cols="2" rowHeight="350px">
-    @for (card of cards | async; track card) {
-      <mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>
-              {{card.title}}
-              <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu" xPosition="before">
-                <button mat-menu-item>Expand</button>
-                <button mat-menu-item>Remove</button>
-              </mat-menu>
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="dashboard-card-content">
-            <div>Card Content Here</div>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-    }
-  </mat-grid-list>
+<div class="dashboard-container">
+  <h1>EST Dashboard</h1>
+  <p>Calculate your average daily carbon footprint:</p>
+  <div class="container">
+    <form [formGroup]="dashboardForm">
+      <div class="row">
+        <div class="col date-section">
+          <mat-form-field appearance="fill">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="section">
+            <h4>Transportation:</h4>
+            <mat-form-field appearance="fill">
+              <mat-label>Transportation Type</mat-label>
+              <mat-select formControlName="transportationType">
+                <mat-option *ngFor="let tp of transportations" [value]="tp.id">{{tp.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Distance (km)</mat-label>
+              <input matInput formControlName="distance">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Transportation daily (kg CO2)</mat-label>
+              <input matInput formControlName="transportationDaily">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col">
+          <div class="section">
+            <h4>Electricity consumption:</h4>
+            <mat-form-field appearance="fill">
+              <mat-label>Consumption (kWh)</mat-label>
+              <input matInput formControlName="electricityConsumption">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Electricity daily (kg CO2)</mat-label>
+              <input matInput formControlName="electricityDaily">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col">
+          <div class="section">
+            <h4>Natural gas usage:</h4>
+            <mat-form-field appearance="fill">
+              <mat-label>Usage (m3)</mat-label>
+              <input matInput formControlName="naturalGasUsage">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Natural gas daily (kg CO2)</mat-label>
+              <input matInput formControlName="naturalGasDaily">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="section">
+            <h4>Food consumption:</h4>
+            <mat-form-field appearance="fill">
+              <mat-label>Beef (kg)</mat-label>
+              <input matInput formControlName="beef">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Chicken (kg)</mat-label>
+              <input matInput formControlName="chicken">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Cheese (kg)</mat-label>
+              <input matInput formControlName="cheese">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Milk (l)</mat-label>
+              <input matInput formControlName="milk">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Food daily (kg CO2)</mat-label>
+              <input matInput formControlName="foodDaily">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col">
+          <div class="section">
+            <h4>Waste:</h4>
+            <mat-form-field appearance="fill">
+              <mat-label>Total (kg)</mat-label>
+              <input matInput formControlName="wasteTotal">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Waste daily (kg CO2)</mat-label>
+              <input matInput formControlName="wasteDaily">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col">
+          <div class="section">
+            <h4>Total Daily:</h4>
+            <button mat-raised-button color="primary" (click)="calculateTotalCO2()">Calculate emissions</button>
+            <mat-form-field appearance="fill">
+              <mat-label>Total daily (kg CO2)</mat-label>
+              <input matInput formControlName="wasteDaily">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

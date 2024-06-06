@@ -1,13 +1,16 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {map} from 'rxjs/operators';
-import {AsyncPipe} from '@angular/common';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatIconModule} from '@angular/material/icon';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import {UserService} from "../shared/user.service";
+import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import {MatNativeDateModule} from "@angular/material/core";
+import {TransportationService} from "../shared/transportation.service";
+import {ErrorHandlerUtil} from "../shared/error-handler.utils";
+import {TransportationModel} from "../auth/model/transportation.model";
 
 @Component({
   selector: 'app-dashboard',
@@ -15,43 +18,56 @@ import {UserService} from "../shared/user.service";
   styleUrl: './dashboard.component.scss',
   standalone: true,
   imports: [
-    AsyncPipe,
-    MatGridListModule,
-    MatMenuModule,
-    MatIconModule,
+    CommonModule,
+    ReactiveFormsModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatNativeDateModule
   ]
 })
 export class DashboardComponent implements OnInit {
-  private breakpointObserver = inject(BreakpointObserver);
+  dashboardForm: FormGroup;
 
-  constructor(private userService: UserService) {
-  }
+  transportations: TransportationModel[] | undefined;
 
   ngOnInit(): void {
-    this.userService.getUser().subscribe();
+    this.loadTransportations();
   }
 
+  constructor(private fb: FormBuilder,
+              private transportationService: TransportationService) {
+    this.dashboardForm = this.fb.group({
+      date: [new Date()],
+      transportationType: [''],
+      distance: [''],
+      electricityConsumption: [''],
+      naturalGasUsage: [''],
+      beef: [''],
+      chicken: [''],
+      cheese: [''],
+      milk: [''],
+      wasteTotal: [''],
+      naturalGasDaily: {value: null, disabled: true},
+      transportationDaily: {value: null, disabled: true},
+      electricityDaily: {value: null, disabled: true},
+      foodDaily: {value: null, disabled: true},
+      wasteDaily: {value: null, disabled: true}
+    });
+  }
 
-  /** Based on the screen size, switch from standard to one column per row */
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({matches}) => {
-      if (matches) {
-        return [
-          {title: 'Card 1', cols: 1, rows: 1},
-          {title: 'Card 2', cols: 1, rows: 1},
-          {title: 'Card 3', cols: 1, rows: 1},
-          {title: 'Card 4', cols: 1, rows: 1}
-        ];
-      }
+  calculateTotalCO2(): void {
+    // Add your calculation logic here
+  }
 
-      return [
-        {title: 'Card 1', cols: 2, rows: 1},
-        {title: 'Card 2', cols: 1, rows: 1},
-        {title: 'Card 3', cols: 1, rows: 2},
-        {title: 'Card 4', cols: 1, rows: 1}
-      ];
-    })
-  );
+  private loadTransportations() {
+    this.transportationService.getAllTransportations().subscribe(
+      {
+        next: response => this.transportations = response,
+        error: err => ErrorHandlerUtil.handleError(err)
+      });
+  }
 }
