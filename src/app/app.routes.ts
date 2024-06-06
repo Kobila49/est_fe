@@ -12,12 +12,30 @@ export const appRoutes: Routes = [
     title: 'Login'
   },
   {
+    path: 'register',
+    loadComponent: () =>
+      import('./register/register.component').then(
+        (c) => c.RegisterComponent
+      ),
+    title: 'Register'
+  },
+  {
     path: 'dashboard',
     loadComponent: () =>
       import('./dashboard/dashboard.component').then(
         (c) => c.DashboardComponent
       ),
     title: 'Dashboard',
+    canActivate: [authGuard],
+    canActivateChild: [authChildGuard]
+  },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./profile/profile.component').then(
+        (c) => c.ProfileComponent
+      ),
+    title: 'Profile',
     canActivate: [authGuard],
     canActivateChild: [authChildGuard]
   },

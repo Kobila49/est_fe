@@ -4,21 +4,22 @@
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="(isHandset$ | async) === false">
     <mat-toolbar>EST App</mat-toolbar>
-    <mat-nav-list class="list-url">
+    <mat-nav-list>
       @for (item of rootRoutes; track $index) {
         <a *ngIf="showLink(item)"
-          mat-list-item
-          [routerLink]="item.path"
-          #link="routerLinkActive"
-          routerLinkActive
-          [activated]="link.isActive"
+           [ngStyle]="{'color': '#757575'}"
+           mat-list-item
+           [routerLink]="item.path"
+           #link="routerLinkActive"
+           routerLinkActive
+           [activated]="link.isActive"
         >
           {{ item.title }}
         </a>
       }
       <a *ngIf="isAuthenticated()"
-        mat-list-item
-        (click)="logout()">Logout</a>
+         mat-list-item
+         (click)="logout()">Logout</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

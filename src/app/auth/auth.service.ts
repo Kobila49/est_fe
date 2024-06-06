@@ -1,11 +1,13 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, throwError} from 'rxjs';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {environment} from '@env/environment';
 import {Principal} from './model/principal.model';
 import {CookieService} from "ngx-cookie-service";
+import {UserDTO} from "./model/register.model";
+import {ErrorHandlerUtil} from "../shared/error-handler.utils";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ import {CookieService} from "ngx-cookie-service";
 export class AuthService {
   readonly rootUrl = `${environment.estApiUrl}`;
   readonly loginUrl = `${this.rootUrl}/api/auth/login`;
+  readonly registerUrl = `${this.rootUrl}/api/auth/signup`;
   readonly refreshTokenUrl = `${this.rootUrl}/api/auth/refresh-token`;
 
   constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) {
@@ -28,7 +31,25 @@ export class AuthService {
           this.setRefreshToken(refreshToken);
         }
       }),
-      catchError(this.handleError<any>('loginUser'))
+      catchError(ErrorHandlerUtil.handleError<string>('loginUser'))
+    );
+  }
+
+  registerUser(registerDto: UserDTO): Observable<string> {
+    return this.http.post<any>(this.registerUrl, registerDto).pipe(
+      map(() => 'Registration successful'),
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage: string;
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Error: ${error.error.message}`;
+        } else if (error.status === 409) {
+          errorMessage = error.error.body || 'User with this email already exists.(fake)';
+        } else {
+          // Backend error
+          errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+        }
+        return throwError(() => new Error(errorMessage));
+      })
     );
   }
 
@@ -50,38 +71,18 @@ export class AuthService {
 
   refreshToken(): Observable<any> {
     const refreshToken = this.getRefreshToken();
-    if (refreshToken) {
-      return this.http.post<any>(this.refreshTokenUrl, {refreshToken}, {observe: 'response'}).pipe(
-        tap(res => {
-          if (res.body) {
-            const authToken = `${res.body.type} ${res.body.token}`;
-            this.setToken(authToken);
-          }
-        }),
-        catchError(err => {
-          this.logout();
-          return throwError(() => err)
-        })
-      );
-    } else {
-      this.logout();
-      return throwError(() => 'No refresh token available');
-    }
+    return this.http.post<any>(this.refreshTokenUrl, {token: refreshToken}).pipe(
+      tap(response => {
+        this.setToken(response.token);
+      })
+    );
   }
 
   logout(): void {
-    this.cookieService.delete('token', '/');
-    this.cookieService.delete('refreshToken', '/');
+    this.cookieService.deleteAll('/');
     this.router.navigate(['login']).then(() => {
       console.log('User logged out');
     });
-  }
-
-  private handleError<T>(operation = 'operation') {
-    return (error: any): Observable<T> => {
-      console.error(`${operation} failed: ${error.message}`);
-      return throwError(() => new Error(error));
-    };
   }
 
   isLoggedIn() {

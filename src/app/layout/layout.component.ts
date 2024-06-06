@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {AsyncPipe, NgIf} from '@angular/common';
+import {AsyncPipe, NgIf, NgStyle} from '@angular/common';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -9,7 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {appRoutes} from "../app.routes";
-import {Route, Router, RouterLink, RouterLinkActive} from "@angular/router";
+import {Route, RouterLink, RouterLinkActive} from "@angular/router";
 import {AuthService} from "../auth/auth.service";
 
 @Component({
@@ -27,12 +27,13 @@ import {AuthService} from "../auth/auth.service";
     RouterLink,
     RouterLinkActive,
     NgIf,
+    NgStyle,
   ]
 })
 export class LayoutComponent {
   private breakpointObserver = inject(BreakpointObserver);
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService) {
   }
 
   rootRoutes = appRoutes.filter(r => r.path);
@@ -44,17 +45,17 @@ export class LayoutComponent {
     );
 
   showLink(item: Route) {
-    if (item.path === 'login' && this.authService.isLoggedIn()) {
+    const loginRegister = (item.path === 'login' || item.path === 'register');
+    if (loginRegister && this.authService.isLoggedIn()) {
       return false;
+    } else if (loginRegister && !this.authService.isLoggedIn()) {
+      return true;
     }
-
     return this.authService.isLoggedIn();
   }
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login'])
-      .then(r => console.log('navigated to login'));
   }
 
   isAuthenticated() {

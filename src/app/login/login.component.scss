@@ -19,7 +19,7 @@
     }
 
     mat-card-header {
-      margin-bottom: 50px;
+      margin-bottom: 30px;
       justify-content: center;
     }
 
@@ -29,31 +29,19 @@
 
     mat-form-field {
       width: 100%;
+      margin-bottom: 16px;
 
       mat-label {
         color: #757575;
       }
 
       input {
-        border-bottom: 1px solid #757575 !important; // Indigo border
+        border-bottom: 1px solid #757575 !important;
       }
 
       mat-error {
         color: red;
         font-size: 12px;
-      }
-    }
-
-    .forgot-password {
-      margin-bottom: 15px;
-
-      a {
-        color: #757575;
-        text-decoration: none;
-
-        &:hover {
-          text-decoration: underline;
-        }
       }
     }
 
@@ -74,6 +62,19 @@
       &:disabled {
         background-color: #90EE90; // Lighter green for disabled state
         cursor: not-allowed;
+      }
+    }
+
+    .forgot-password {
+      margin-bottom: 15px;
+
+      a {
+        color: #757575;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
