@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+
+@use "@angular/material" as mat;
+
+@include mat.core();
+
+$angular-material-3-theme: mat.define-theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$spring-green-palette,
+        tertiary: mat.$yellow-palette,
+      ),
+      density: (
+        scale: 0,
+      ),
+    )
+);
+
+:root {
+  @include mat.all-component-themes($angular-material-3-theme);
+}

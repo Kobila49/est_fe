@@ -1,0 +1,93 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #8BC24B; // Lime green background
+
+  .login-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+
+    mat-card {
+      background-color: #c0f7c0;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    mat-card-header {
+      margin-bottom: 50px;
+      justify-content: center;
+    }
+
+    mat-card-title {
+      color: #757575;
+    }
+
+    mat-form-field {
+      width: 100%;
+
+      mat-label {
+        color: #757575;
+      }
+
+      input {
+        border-bottom: 1px solid #757575 !important; // Indigo border
+      }
+
+      mat-error {
+        color: red;
+        font-size: 12px;
+      }
+    }
+
+    .forgot-password {
+      margin-bottom: 15px;
+
+      a {
+        color: #757575;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #00FF00; // Bright green button
+      color: #757575;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+
+      &:hover {
+        background-color: #32CD32; // Slightly darker green on hover
+      }
+
+      &:disabled {
+        background-color: #90EE90; // Lighter green for disabled state
+        cursor: not-allowed;
+      }
+    }
+
+    .signup-link {
+      margin-top: 15px;
+
+      a {
+        color: #757575;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
