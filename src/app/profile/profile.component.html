@@ -1,0 +1,68 @@
+<div class="profile-container">
+  <div class="profile-box">
+    <h2>Your profile</h2>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" required/>
+            <mat-error *ngIf="profileForm.get('email')?.invalid">Valid Email is required.</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>D.O.B</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" required/>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="profileForm.get('dateOfBirth')?.invalid">Date of Birth is required.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"/>
+            <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="profileForm.get('password')?.invalid">Password is required.</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Repeat password</mat-label>
+            <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword" required />
+            <button mat-icon-button matSuffix (click)="toggleConfirmPasswordVisibility()" type="button">
+              <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>            <mat-error *ngIf="profileForm.get('confirmPassword')?.invalid">Password is required.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>First name</mat-label>
+            <input matInput formControlName="firstName" required/>
+            <mat-error *ngIf="profileForm.get('firstName')?.invalid">First Name is required.</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="fill">
+            <mat-label>Last name</mat-label>
+            <input matInput formControlName="lastName" required/>
+            <mat-error *ngIf="profileForm.get('lastName')?.invalid">Last Name is required.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
