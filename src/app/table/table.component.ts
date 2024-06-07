@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatTableModule, MatTable } from '@angular/material/table';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import { TableDataSource, TableItem } from './table-datasource';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {MatTable, MatTableModule} from '@angular/material/table';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatSort, MatSortModule} from '@angular/material/sort';
+import {TableDataSource, TableItem} from './table-datasource';
 
 @Component({
   selector: 'app-table',
@@ -18,7 +18,7 @@ export class TableComponent implements AfterViewInit {
   dataSource = new TableDataSource();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['date', 'transportationEmissionDailyTotal', 'foodEmissionDailyTotal', 'utilityEmissionDailyTotal', 'totalEmission'];
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
