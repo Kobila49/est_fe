@@ -35,3 +35,36 @@ h1, p {
   text-align: center;
   color: #757575;
 }
+
+.removal-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+button {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #00FF00; // Bright green button
+  color: #757575;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: #32CD32; // Slightly darker green on hover
+  }
+
+  &:disabled {
+    background-color: #90EE90; // Lighter green for disabled state
+    cursor: not-allowed;
+  }
+}

@@ -1,6 +1,7 @@
-export class TransportationModel {
+export class UtilityModel {
   id?: number;
-  name?: string;
+  measurementUnit?: string;
+  type?: string;
   emissionFactor?: number;
   emissionQuantity?: number;
 }

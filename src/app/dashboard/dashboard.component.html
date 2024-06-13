@@ -20,92 +20,105 @@
             <mat-form-field appearance="fill">
               <mat-label>Transportation Type</mat-label>
               <mat-select formControlName="transportationType">
-                <mat-option *ngFor="let tp of transportations" [value]="tp.id">{{tp.name}}</mat-option>
+                <mat-option *ngFor="let tp of transportations" [value]="tp.id"
+                            [disabled]="checkIfExistsTP(tp.id)">{{ tp.name }}
+                </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>Distance (km)</mat-label>
               <input matInput formControlName="distance">
             </mat-form-field>
+            <button mat-raised-button color="primary" (click)="addTransportationEmissionRecord()">Add Transportation
+            </button>
             <mat-form-field appearance="fill">
               <mat-label>Transportation daily (kg CO2)</mat-label>
               <input matInput formControlName="transportationDaily">
             </mat-form-field>
           </div>
-        </div>
-        <div class="col">
-          <div class="section">
-            <h4>Electricity consumption:</h4>
-            <mat-form-field appearance="fill">
-              <mat-label>Consumption (kWh)</mat-label>
-              <input matInput formControlName="electricityConsumption">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>Electricity daily (kg CO2)</mat-label>
-              <input matInput formControlName="electricityDaily">
-            </mat-form-field>
+          <div *ngIf="transportationEmissionRecords.length > 0" class="section">
+            <h5>Selected Transportations:</h5>
+            <div class="removal-buttons">
+              <button mat-raised-button *ngFor="let item of transportationEmissionRecords; let i = index"
+                      (click)="removeTransportationEmission(item.transportationId)">
+                {{ getTransportationNameById(item.transportationId) }}: {{ item.distance }} km
+              </button>
+            </div>
           </div>
         </div>
         <div class="col">
           <div class="section">
-            <h4>Natural gas usage:</h4>
+            <h4>Utility consumption:</h4>
             <mat-form-field appearance="fill">
-              <mat-label>Usage (m3)</mat-label>
-              <input matInput formControlName="naturalGasUsage">
+              <mat-label>Utility Type</mat-label>
+              <mat-select formControlName="utilityType">
+                <mat-option *ngFor="let u of utilities" [value]="u.id"
+                            [disabled]="checkIfExistsUtility(u.id)">{{ beautifyName(u.type) }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
             <mat-form-field appearance="fill">
-              <mat-label>Natural gas daily (kg CO2)</mat-label>
-              <input matInput formControlName="naturalGasDaily">
+              <mat-label>Consumption {{ getUtilityMeasurementUnit() }}</mat-label>
+              <input matInput formControlName="utilityConsumption">
             </mat-form-field>
+            <button mat-raised-button color="primary" (click)="addUtilityEmissionRecord()">Add Utility
+            </button>
+            <mat-form-field appearance="fill">
+              <mat-label>Utility daily (kg CO2)</mat-label>
+              <input matInput formControlName="utilityDaily">
+            </mat-form-field>
+            <div *ngIf="utilitiesEmissionRecords.length > 0" class="section">
+              <h5>Selected Utility:</h5>
+              <div class="removal-buttons">
+                <button mat-raised-button *ngFor="let item of utilitiesEmissionRecords; let i = index"
+                        (click)="removeUtilityEmission(item.utilityId)">
+                  {{ getUtilityById(item.utilityId) }}
+                  : {{ item.consumption }} {{ getUtilityMeasurementUnitById(item.utilityId) }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="section">
+            <h4>Food consumption:</h4>
+            <mat-form-field appearance="fill">
+              <mat-label>Food Type</mat-label>
+              <mat-select formControlName="foodType">
+                <mat-option *ngFor="let f of foods" [value]="f.id" [disabled]="checkIfExistsFood(f.id)">{{ f.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Quantity (kg)</mat-label>
+              <input matInput formControlName="foodQuantity">
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="addFoodEmissionRecord()">Add Food
+            </button>
+            <mat-form-field appearance="fill">
+              <mat-label>Food daily (kg CO2)</mat-label>
+              <input matInput formControlName="foodDaily">
+            </mat-form-field>
+            <div *ngIf="foodEmissionRecords.length > 0" class="section">
+              <h5>Selected Food:</h5>
+              <div class="removal-buttons">
+                <button mat-raised-button *ngFor="let item of foodEmissionRecords; let i = index"
+                        (click)="removeFoodEmission(item.foodId)">
+                  {{ getFoodNameById(item.foodId) }}: {{ item.consumption }} kg
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <div class="section">
-            <h4>Food consumption:</h4>
-            <mat-form-field appearance="fill">
-              <mat-label>Beef (kg)</mat-label>
-              <input matInput formControlName="beef">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>Chicken (kg)</mat-label>
-              <input matInput formControlName="chicken">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>Cheese (kg)</mat-label>
-              <input matInput formControlName="cheese">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>Milk (l)</mat-label>
-              <input matInput formControlName="milk">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>Food daily (kg CO2)</mat-label>
-              <input matInput formControlName="foodDaily">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="col">
-          <div class="section">
-            <h4>Waste:</h4>
-            <mat-form-field appearance="fill">
-              <mat-label>Total (kg)</mat-label>
-              <input matInput formControlName="wasteTotal">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <mat-label>Waste daily (kg CO2)</mat-label>
-              <input matInput formControlName="wasteDaily">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="col">
-          <div class="section">
             <h4>Total Daily:</h4>
             <button mat-raised-button color="primary" (click)="calculateTotalCO2()">Calculate emissions</button>
             <mat-form-field appearance="fill">
               <mat-label>Total daily (kg CO2)</mat-label>
-              <input matInput formControlName="wasteDaily">
+              <input matInput formControlName="totalDaily">
             </mat-form-field>
           </div>
         </div>

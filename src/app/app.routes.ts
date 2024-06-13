@@ -45,7 +45,7 @@ export const appRoutes: Routes = [
       import('./table/table.component').then(
         (c) => c.TableComponent
       ),
-    title: 'History',
+    title: 'Summary of Emissions',
     canActivate: [authGuard],
     canActivateChild: [authChildGuard]
   }
